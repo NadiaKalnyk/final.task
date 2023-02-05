@@ -6,23 +6,12 @@ import ua.hillel.UI.*;
 
 public class UITests extends UIBase {
     @Test
-    public void login(){
-        String login = "nk_test";
-        String password = "123456qQ";
-        new BasePage().goToLoginPage()
-                .setUsername(login)
-                .setPassword(password)
-                .clickLoginButton();
-    }
-    @Test
     public void changeData() {
         String firstName = "Nadia";
         String lastName = "Test";
-        login();
-        BroadAnnouncementPage broadAnnouncementPage = new BroadAnnouncementPage();
-
-        broadAnnouncementPage.clickIconMenu()
-                .selectProfileOption()
+        LoginPage loginPage = new LoginPage();
+        loginPage.userLoggedIn()
+                .openProfilePage()
                 .clickEditButton()
                 .setFirstName(firstName)
                 .setLastName(lastName)
@@ -38,17 +27,16 @@ public class UITests extends UIBase {
         String titleValue = "QA Automation";
         String descriptionValue = "TBD";
         String priceValue = "11111";
-        login();
-        BroadAnnouncementPage broadAnnouncementPage = new BroadAnnouncementPage();
 
-        broadAnnouncementPage.clickIconMenu()
-                .selectProfileOption()
+        LoginPage loginPage = new LoginPage();
+        loginPage.userLoggedIn()
+                .openProfilePage()
                 .clickAddJobButton()
                 .setJobTitle(titleValue)
                 .setJobDescription(descriptionValue)
                 .setJobPrice(priceValue)
                 .clickCreateJobButton();
-
+        timeSetup();
         ProfilePage profilePage = new ProfilePage();
         Assert.assertTrue(profilePage.getCreatedJobTitle().contains(titleValue));
         Assert.assertTrue(profilePage.getCreatedJobDescription().contains(descriptionValue));
@@ -56,24 +44,21 @@ public class UITests extends UIBase {
     }
     @Test
     public void addComment() throws ElementIsNotFoundException {
-        login();
-        BroadAnnouncementPage broadAnnouncementPage = new BroadAnnouncementPage();
-        broadAnnouncementPage.clickViewInfoButton()
+        LoginPage loginPage = new LoginPage();
+        loginPage.userLoggedIn()
+                .clickViewInfoButton()
                 .setComment()
                 .clickLeaveCommentButton()
                 .checkAddedComment();
     }
     @Test
     public void deleteAnnouncement()  throws ElementIsNotFoundException{
-        login();
-        BroadAnnouncementPage broadAnnouncementPage = new BroadAnnouncementPage();
-
-        Assert.assertTrue(broadAnnouncementPage.clickIconMenu().selectProfileOption()
-                .checkAllYouAnnouncements());
-
-/*        broadAnnouncementPage.clickIconMenu().selectProfileOption()
+        LoginPage loginPage = new LoginPage();
+        loginPage.userLoggedIn()
+                .openProfilePage()
+                .viewAnnouncements()
+                .checkAllYouAnnouncements()
                 .clickRemoveJob();
         alert();
- */
     }
 }

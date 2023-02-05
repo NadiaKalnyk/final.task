@@ -29,4 +29,8 @@ public class BroadAnnouncementPage {
         }
         return new CommentPage();
     }
+    public ProfilePage openProfilePage(){
+        clickIconMenu().selectProfileOption();
+        return new ProfilePage();
+    }
 }

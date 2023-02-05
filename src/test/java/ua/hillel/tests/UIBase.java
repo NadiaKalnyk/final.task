@@ -8,6 +8,9 @@ import ua.hillel.UI.BasePage;
 import static com.codeborne.selenide.Selenide.open;
 
 public class UIBase {
+    static {
+        Configuration.reportsFolder = "test-result/reports/ExtentHtml.html";
+    }
     @BeforeTest
     public void setUp() {
         Configuration.browser = "chrome";
@@ -15,8 +18,11 @@ public class UIBase {
         Configuration.timeout = 40000;
         Configuration.pageLoadTimeout = 40000;
         Configuration.savePageSource = false;
-        Configuration.reportsFolder = "test-result/reports";
         Configuration.screenshots = true;
+    }
+    public void timeSetup(){
+        Configuration.timeout = 40000;
+        Configuration.pageLoadTimeout = 40000;
     }
     public void login() {
         new BasePage().goToLoginPage()

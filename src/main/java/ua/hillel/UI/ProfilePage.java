@@ -1,9 +1,8 @@
 package ua.hillel.UI;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
@@ -20,7 +19,7 @@ public class ProfilePage {
     private SelenideElement jobDescription = $x("//textarea[@formcontrolname='description']");
     private SelenideElement jobPrice = $x("//input[@formcontrolname='price']");
     private SelenideElement createJobButton = $x("//*[text()=' Create job ']");
-    private ElementsCollection createdJobTitles = $$x("//mat-card["+newCreatedJobID+"]/mat-card-header/div/mat-card-title");
+    private SelenideElement createdJobTitle = $x("//mat-card[1]/mat-card-header/div/mat-card-title");
     private SelenideElement createdJobDescription = $x("//mat-card[1]/mat-card-content");
     private SelenideElement createdJobPrice = $x("//mat-card[1]/mat-card-subtitle/mat-card-subtitle[2]");
     private  SelenideElement cancelButton = $x("//*[text()=' Cancel ']");
@@ -72,7 +71,7 @@ public class ProfilePage {
         return this;
     }
     public String getCreatedJobTitle(){
-        return createdJobTitles.get(newCreatedJobID).shouldBe(Condition.visible).getText();
+        return createdJobTitle.shouldBe(Condition.visible).getText();
     }
     public String getCreatedJobDescription(){
         return createdJobDescription.shouldBe(Condition.visible).getText();
@@ -87,10 +86,10 @@ public class ProfilePage {
     }
     public ProfilePage clickRemoveJob() throws ElementIsNotFoundException {
         boolean findAnnouncement = removeJobButton.exists();
-        if(findAnnouncement==false) {
-            throw new ElementIsNotFoundException("Job is not created by ID" + deleteJobID);
-        } else {
+        if(findAnnouncement==true) {
             removeJobButton.shouldBe(Condition.visible).click();
+        } else {
+            throw new ElementIsNotFoundException("Job is not created by ID" + deleteJobID);
         }
         return this;
     }
@@ -98,34 +97,14 @@ public class ProfilePage {
             Selenide.actions(). scrollByAmount(0, 10000).perform();
             return new ProfilePage();
         }
-    public boolean checkAllYouAnnouncements() throws ElementIsNotFoundException {
-/*        for (int i = newCreatedJobID; i < announcements.size(); i++) {
-            if (announcements.isEmpty()) {
+    public ProfilePage checkAllYouAnnouncements() throws ElementIsNotFoundException {
+            boolean b = announcements.isEmpty();
+            if (b==true) {
                 throw new ElementIsNotFoundException("No announcement has been created");
+            } else {
+                System.out.println("You had " + announcements.size() + " announcements. First of them was deleted");
             }
-        }*/
-/*        List<SelenideElement> allAnnouncements = (List<SelenideElement>) createdJobTitles;
-        for (SelenideElement announcement : allAnnouncements) {
-            if (!(announcement.exists())) {
-                throw new ElementIsNotFoundException("No announcement has been created");
-            }
-            System.out.println(announcement.getText());
-        }*/
-/*        for(int i = newCreatedJobID; i<createdJobTitles.size(); i++) {
-            if (!(createdJobTitles.get(i).exists())) {
-                throw new ElementIsNotFoundException("No announcement has been created");
-            }
-            createdJobTitles.get(i).shouldBe(Condition.visible).exists();
-        }
-        return this.checkAllYouAnnouncements();*/
-
-        if (this.createdJobTitles.isEmpty()) {
-
-            throw new ElementIsNotFoundException("No announcement has been created");
-        }
-
-        this.createdJobTitles.findBy(Condition.visible).exists();
-        return this.checkAllYouAnnouncements();
+        return this;
     }
 }
 

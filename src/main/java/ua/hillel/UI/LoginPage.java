@@ -23,5 +23,14 @@ public class LoginPage {
         loginButton.shouldBe(Condition.visible).shouldBe(Condition.enabled).click();
         return new BroadAnnouncementPage();
     }
+    public BroadAnnouncementPage userLoggedIn(){
+        String login = "nk_test";
+        String password = "123456qQ";
+        new BasePage().goToLoginPage()
+                .setUsername(login)
+                .setPassword(password)
+                .clickLoginButton();
+        return new BroadAnnouncementPage();
+    }
 }
 
